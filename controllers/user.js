@@ -82,10 +82,35 @@ const getUser = async (request, response) => {
 }
 
 
+const resetPassword = async (request, response) => {
+    const {email, password} = request.body
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    try{
+        const setPassword = await User.updateOne(
+            {email : email},
+            {
+                $set : {
+                    password : hashPassword
+                }
+            }
+        )
+        return response.status(201).json({
+            message : "Password Updated",
+            body : setPassword
+        })
+    }catch(err){
+        response.json({message : err})
+    }
+}
+
+
 
 module.exports = {
     signup,
     signin, 
-    getUser
+    getUser,
+    resetPassword
 }
 
