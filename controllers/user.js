@@ -106,6 +106,10 @@ const resetPassword = async (request, response) => {
 }
 
 
+const changePassword = async (request, response) => {
+
+}
+
 
 module.exports = {
     signup,
