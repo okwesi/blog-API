@@ -38,8 +38,13 @@ const createPost = async (request, response) => {
 
 const deletepost = async (request, response) => {
   try {
-    const post = await Post.findByIdAndRemove(request.params.id);
-    response.json(post);
+    const post = await Post.findById(request.params.id)
+    if (post.user.toString() === request.user._id){
+      await Post.findByIdAndRemove(request.params.id)
+      return response.status(200).json({message: "Object deleted successfully"})
+    }else{
+      return response.status(401).json({message:"You're not the post author"})
+    }
   } catch (err) {
     response.json({ message: err });
   }
