@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const cors = require('cors')
+require('dotenv').config()
 
 
 
@@ -27,6 +28,6 @@ app.listen(port, () => {
 })
 
 
-mongoose.connect('mongodb+srv://djangotest:djangomongo123@cluster0.biegmbq.mongodb.net/?retryWrites=true&w=majority', ()=>{
+mongoose.connect(process.env.MONGO_URL, ()=>{
     console.log("connected to mongo dbee")
 })
