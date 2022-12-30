@@ -88,6 +88,7 @@ const unlikePost = async (request, response) => {
       $pull: { likes: request.user._id },
     },
     {
+      
       new: true,
     }
   ).exec((error, result) => {
