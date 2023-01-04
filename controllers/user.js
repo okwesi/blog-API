@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Joi = require("@hapi/joi");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mail = require("./mail/sendMail")
 
 // validation
 const SignupSchema = Joi.object({
@@ -74,8 +75,28 @@ const getUser = async (request, response) => {
   }
 };
 
+function generateOTP() {
+  var digits = '0123456789';
+  var OTP = '';
+  for (let i = 0; i < 6; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;}
+
 const sendEmailForConfirmation = async (request, response) => {
-  
+  const {email} = request.body
+  let oneTimePassword = generateOTP();
+
+  console.log(email)
+  console.log(oneTimePassword)
+
+  try {
+    const sendMail = await mail.sendMail(email, oneTimePassword)
+    return response.json(sendMail)
+    console.log(sendMail)
+  }catch(err){
+    return response.status(400).json({error_message: err})
+  }
 }
 
 const resetPassword = async (request, response) => {
@@ -133,5 +154,6 @@ module.exports = {
   getUser,
   resetPassword,
   changePassword,
+  sendEmailForConfirmation
 };
 

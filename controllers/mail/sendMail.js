@@ -1,38 +1,39 @@
 const { response } = require("express");
 const { promisify } = require("util");
 const handlebars = require("handlebars");
-
 const express = require("express");
 const fs = require("fs");
 const readFile = promisify(fs.readFile);
 
 const transporter = require("./mailconfig");
 
-const sendMail = async (request, response) => {
-  const { name, from, to, subject, text, html } = request.body;
-  const template = fs.readFileSync("./src/mail.html", "utf8");
+const sendMail = async (email, oneTimePassword) => {
+  // const { name, from, to, subject, text, html } = request.body;
+  const template = fs.readFileSync("./controllers/mail/mail.html", "utf8");
 
   const compiledTemplate = handlebars.compile(template);
-
+  console.log(oneTimePassword)
   const data = {
-    name: "John",
-    age: 30,
+    text: "You have sent a mail to oconfirm you password change. Enter the OTP in the site to confirm it",
+    OTP: oneTimePassword,
   };
+  console.log("we came")
   // send mail with defined transport object
   let info = await transporter.sendMail(
     {
-      from: `"${name}" <${from}>`, // sender address
-      to: `${to}`, // list of receivers
-      subject: `${subject}`, // Subject line
-      text: `${text}`, // plain text body
-      html: compiledTemplate(data)
+      from: '"NodeMail" <gyamfiowusu630@gmail.com>', // sender address
+      to: `${email}`, // list of receivers
+      subject: "Request to Reset Password", // Subject line
+      text: "Body", // plain text body
+      html: compiledTemplate(data),
     },
     function (err, success) {
-      if (err) return response.status(400).json({ message: err });
-      return response.status(400).json({ message: success });
+      console.log("here")
+      if (err) return err;
+      return success;
     }
   );
-  //   console.log(name, from, to, subject, text, html );
+  // console.log(name, from, to, subject, text, html );
 };
 
 module.exports = {
