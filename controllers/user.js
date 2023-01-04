@@ -74,6 +74,10 @@ const getUser = async (request, response) => {
   }
 };
 
+const sendEmailForConfirmation = async (request, response) => {
+  
+}
+
 const resetPassword = async (request, response) => {
   const { email, password } = request.body;
   const salt = await bcrypt.genSalt(10);
