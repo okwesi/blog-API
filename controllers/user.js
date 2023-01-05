@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mail = require("./mail/sendMail")
 
+
 // validation
 const SignupSchema = Joi.object({
   name: Joi.string().min(6).max(255).required(),
@@ -15,6 +16,7 @@ const SignupSchema = Joi.object({
     .min(6)
     .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
 });
+
 
 const SigninSchema = Joi.object({
   email: Joi.string().email().min(6).max(255).required(),
@@ -64,7 +66,7 @@ const signin = async (request, response) => {
 
   const token = jwt.sign({ _id: user._id }, "kennethisboss");
   response.header("Authorization", token).json(token);
-};
+};   
 
 const getUser = async (request, response) => {
   try {
@@ -74,6 +76,7 @@ const getUser = async (request, response) => {
     response.json({ message: err });
   }
 };
+
 
 function generateOTP() {
   var digits = '0123456789';
@@ -87,17 +90,15 @@ const sendEmailForConfirmation = async (request, response) => {
   const {email} = request.body
   let oneTimePassword = generateOTP();
 
-  console.log(email)
-  console.log(oneTimePassword)
-
   try {
     const sendMail = await mail.sendMail(email, oneTimePassword)
-    return response.json(sendMail)
-    console.log(sendMail)
+    return response.json({message:"email sent",
+                          OTP: oneTimePassword})
   }catch(err){
     return response.status(400).json({error_message: err})
   }
 }
+
 
 const resetPassword = async (request, response) => {
   const { email, password } = request.body;
