@@ -32,7 +32,11 @@ const userSchema = mongoose.Schema({
     isAdmin : {
         type : Boolean,
         deafult: false
+    },
+    resetToken: {
+        type: string
     }
+    
 })
 
 
