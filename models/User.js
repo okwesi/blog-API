@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
         deafult: false
     },
     resetToken: {
-        type: string
+        type: String
     }
     
 })
