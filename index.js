@@ -31,3 +31,4 @@ app.listen(port, () => {
 mongoose.connect(process.env.MONGO_URL, ()=>{
     console.log("connected to mongo dbee")
 })
+
