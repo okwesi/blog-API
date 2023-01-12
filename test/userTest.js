@@ -65,7 +65,6 @@ describe("Test User Sign In", () => {
     });
   });
 
-
   it("should return status code 400 and Email is not correct", (done) => {
     const options = {
       url: "http://localhost:5000/users/signin/",
@@ -77,7 +76,7 @@ describe("Test User Sign In", () => {
     };
     request(options, (error, response, body) => {
       assert.equal(400, response.statusCode);
-      assert.equal("User with this email does not exist",  body);
+      assert.equal("User with this email does not exist", body);
       done();
     });
   });
@@ -93,7 +92,27 @@ describe("Test User Sign In", () => {
     };
     request(options, (error, response, body) => {
       assert.equal(400, response.statusCode);
-      assert.equal("Password is not correct",  body);
+      assert.equal("Password is not correct", body);
+      done();
+    });
+  });
+});
+
+/////////////////////////////////////////////////////////////////////
+describe("Test User Sign Up", () => {
+  it("should return status code 201 and user Data", (done) => {
+    const options = {
+      url: "http://localhost:5000/users/signup/",
+      method: "POST",
+      json: {
+        name: "django test",
+        email: "djangotest4@gmail.com",
+        password: "123456",
+      },
+    };
+    request.get(options, (error, response, body) => {
+      assert.equal(201, response.statusCode);
+      assert.deepEqual("string", typeof JSON.parse(body.user_id));
       done();
     });
   });
