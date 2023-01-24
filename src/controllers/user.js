@@ -1,6 +1,6 @@
 const { response, request } = require("express");
 const express = require("express");
-const User = require("../src/models/User");
+const User = require("../models/User");
 const Joi = require("@hapi/joi");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
